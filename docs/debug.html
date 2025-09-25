@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Latin Quiz Debug</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+        }
+        .screen {
+            display: none !important; /* Force hiding */
+            border: 3px solid #3f51b5;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+        .screen.active {
+            display: block !important; /* Force showing */
+        }
+        h1 {
+            color: #3f51b5;
+        }
+        .btn {
+            background-color: #3f51b5;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            margin: 5px;
+            border-radius: 4px;
+        }
+        #screen-status {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Latin Quiz Debug</h1>
+    
+    <div id="screen-status">
+        Current status: Diagnosing screen visibility issues
+    </div>
+    
+    <div>
+        <button id="fix-btn" class="btn">Fix Screen Display Issues</button>
+        <button id="check-btn" class="btn">Check CSS/JS Loading</button>
+    </div>
+    
+    <hr>
+    
+    <h2>Screen Navigation Test</h2>
+    
+    <div>
+        <button class="btn test-nav" data-screen="screen1">Show Screen 1</button>
+        <button class="btn test-nav" data-screen="screen2">Show Screen 2</button>
+        <button class="btn test-nav" data-screen="screen3">Show Screen 3</button>
+    </div>
+    
+    <div id="screen1" class="screen active">
+        <h2>Screen 1</h2>
+        <p>This is test screen 1. If you can see this, the "active" class is working.</p>
+    </div>
+    
+    <div id="screen2" class="screen">
+        <h2>Screen 2</h2>
+        <p>This is test screen 2. This should only appear when activated.</p>
+    </div>
+    
+    <div id="screen3" class="screen">
+        <h2>Screen 3</h2>
+        <p>This is test screen 3. This should only appear when activated.</p>
+    </div>
+    
+    <hr>
+    
+    <h2>CSS File Test</h2>
+    <div id="css-test">
+        Testing if styles.css is loaded properly...
+    </div>
+    
+    <hr>
+    
+    <h2>JS File Test</h2>
+    <div id="js-test">
+        Testing if quiz.js is loaded properly...
+    </div>
+    
+    <script>
+        // Test screen navigation
+        document.querySelectorAll('.test-nav').forEach(button => {
+            button.addEventListener('click', () => {
+                const targetId = button.getAttribute('data-screen');
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.remove('active');
+                });
+                document.getElementById(targetId).classList.add('active');
+                document.getElementById('screen-status').textContent = 
+                    `Current status: Showing ${targetId}`;
+            });
+        });
+        
+        // Test if original styles.css is loaded
+        document.getElementById('check-btn').addEventListener('click', () => {
+            // Check if styles.css is loaded
+            const stylesLoaded = Array.from(document.styleSheets)
+                .some(sheet => sheet.href && sheet.href.includes('styles.css'));
+            
+            // Check if quiz.js is loaded
+            const scriptLoaded = Array.from(document.scripts)
+                .some(script => script.src && script.src.includes('quiz.js'));
+            
+            document.getElementById('css-test').innerHTML = 
+                `styles.css loaded: <strong>${stylesLoaded ? 'YES' : 'NO'}</strong>`;
+            document.getElementById('js-test').innerHTML = 
+                `quiz.js loaded: <strong>${scriptLoaded ? 'YES' : 'NO'}</strong>`;
+                
+            if (!stylesLoaded || !scriptLoaded) {
+                document.getElementById('screen-status').innerHTML = 
+                    `<strong style="color: red;">Warning: Missing required files!</strong> ` +
+                    `This could be why screens are not displaying properly.`;
+            }
+        });
+        
+        // Fix button
+        document.getElementById('fix-btn').addEventListener('click', () => {
+            // Add explicit CSS fix
+            const style = document.createElement('style');
+            style.textContent = `
+                .screen { display: none !important; }
+                .screen.active { display: block !important; }
+                
+                /* Make sure screens don't affect each other */
+                #login-screen, #main-menu, #quiz-setup, #quiz-screen, 
+                #results-screen, #progress-screen {
+                    display: none !important;
+                }
+                
+                #login-screen.active, #main-menu.active, #quiz-setup.active, 
+                #quiz-screen.active, #results-screen.active, #progress-screen.active {
+                    display: block !important;
+                }
+                
+                /* Debug visual aid */
+                #login-screen.active { border-top: 5px solid blue; }
+                #main-menu.active { border-top: 5px solid green; }
+                #quiz-setup.active { border-top: 5px solid orange; }
+                #quiz-screen.active { border-top: 5px solid red; }
+                #results-screen.active { border-top: 5px solid purple; }
+                #progress-screen.active { border-top: 5px solid cyan; }
+            `;
+            document.head.appendChild(style);
+            
+            // Add force fix to main page (if loaded)
+            try {
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.style.display = 'none';
+                });
+                if (document.querySelector('.screen.active')) {
+                    document.querySelector('.screen.active').style.display = 'block';
+                } else if (document.getElementById('login-screen')) {
+                    document.getElementById('login-screen').classList.add('active');
+                    document.getElementById('login-screen').style.display = 'block';
+                }
+                
+                document.getElementById('screen-status').innerHTML = 
+                    `<strong style="color: green;">Fix applied!</strong> ` +
+                    `Reload the main page and it should now display screens correctly.`;
+            } catch (e) {
+                document.getElementById('screen-status').innerHTML = 
+                    `<strong style="color: orange;">Fix code added but couldn't apply to current page.</strong> ` +
+                    `Please copy the CSS fix below and paste it into your styles.css file:<br>` +
+                    `<textarea style="width: 100%; height: 100px;">${style.textContent}</textarea>`;
+            }
+        });
+    </script>
+</body>
+</html>

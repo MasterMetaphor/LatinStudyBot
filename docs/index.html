@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Latin Quiz</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Login Screen -->
+        <div id="login-screen" class="screen active">
+            <div class="card">
+                <div class="header-logo">
+                    <i class="fas fa-landmark"></i>
+                </div>
+                <h1>Enhanced Latin Quiz</h1>
+                <p class="subtitle">Test your Latin knowledge with our comprehensive quiz system</p>
+                
+                <div class="login-container">
+                    <div class="form-container">
+                        <h2>Login / Register</h2>
+                        <form id="login-form" class="form">
+                            <div class="form-group">
+                                <label for="username-input">Username (max 16 chars)</label>
+                                <input type="text" id="username-input" maxlength="16" placeholder="Enter username">
+                            </div>
+                            <div class="form-group">
+                                <label for="pin-input">PIN (4-8 digits)</label>
+                                <input type="password" id="pin-input" maxlength="8" placeholder="Enter PIN">
+                            </div>
+                            <div class="button-group">
+                                <button type="button" id="login-btn" class="btn primary">Login</button>
+                                <button type="button" id="register-btn" class="btn secondary">Register</button>
+                            </div>
+                        </form>
+                        
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                        
+                        <div class="guest-login">
+                            <button id="guest-btn" class="btn guest">
+                                <i class="fas fa-user"></i> Continue as Guest
+                            </button>
+                            <p class="guest-note">Progress won't be saved in guest mode</p>
+                        </div>
+                        
+                        <div id="login-message" class="message hidden"></div>
+                    </div>
+                    
+                    <div class="features">
+                        <h3>Features</h3>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Comprehensive Latin grammar questions</li>
+                            <li><i class="fas fa-check"></i> Enhanced sentence translations</li>
+                            <li><i class="fas fa-check"></i> Helpful hints for each question</li>
+                            <li><i class="fas fa-check"></i> Progress tracking</li>
+                            <li><i class="fas fa-check"></i> Detailed performance statistics</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Main Menu Screen -->
+        <div id="main-menu" class="screen">
+            <div class="card">
+                <h1>Latin Quiz</h1>
+                <p id="welcome-message" class="welcome-message">Welcome back!</p>
+                
+                <div class="menu-buttons">
+                    <button id="start-quiz-btn" class="menu-button">
+                        <i class="fas fa-play"></i>
+                        <span>Start Quiz</span>
+                        <small>Test your Latin knowledge</small>
+                    </button>
+                    
+                    <button id="view-progress-btn" class="menu-button">
+                        <i class="fas fa-chart-line"></i>
+                        <span>View Progress</span>
+                        <small>Track your improvement</small>
+                    </button>
+                    
+                    <button id="logout-btn" class="menu-button danger">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                        <small>Return to login screen</small>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="card info-card">
+                <h3><i class="fas fa-info-circle"></i> About Latin Quiz</h3>
+                <p>This enhanced version includes comprehensive Latin grammar questions, quality of life features, and a user account system to track your progress. Test your knowledge of cases, declensions, verb conjugations, and translations!</p>
+            </div>
+        </div>
+        
+        <!-- Quiz Setup Screen -->
+        <div id="quiz-setup" class="screen">
+            <div class="card">
+                <h1>Quiz Setup</h1>
+                
+                <div class="form">
+                    <div class="form-group">
+                        <label for="num-questions">Number of Questions:</label>
+                        <select id="num-questions">
+                            <option value="5">5</option>
+                            <option value="10" selected>10</option>
+                            <option value="15">15</option>
+                            <option value="20">20</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="question-type">Question Type:</label>
+                        <select id="question-type">
+                            <option value="all" selected>All Types</option>
+                            <option value="cases">Cases & Functions</option>
+                            <option value="nouns">Nouns & Declensions</option>
+                            <option value="verbs">Verbs & Conjugations</option>
+                            <option value="translation">Translations</option>
+                            <option value="adjectives">Adjectives & Agreement</option>
+                        </select>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="start-button" class="btn primary">Start Quiz</button>
+                        <button id="back-to-menu" class="btn secondary">Back to Menu</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="screen">
+            <div class="card">
+                <div class="progress-container">
+                    <div class="progress-bar">
+                        <div id="progress-fill"></div>
+                    </div>
+                    <div id="progress-text">Question 1 of 10</div>
+                </div>
+
+                <div class="question-container">
+                    <h2 id="question-text">What is the function of the Accusative Case?</h2>
+                </div>
+
+                <div id="choices-container" class="choices-container">
+                    <!-- Choices will be added here by JavaScript -->
+                </div>
+
+                <div id="feedback-container" class="hidden">
+                    <!-- Feedback will be added here by JavaScript -->
+                </div>
+                
+                <div id="hint-box" class="hint-box hidden">
+                    <!-- Hint will be added here by JavaScript -->
+                </div>
+
+                <div class="buttons-container">
+                    <button id="hint-button" class="btn secondary">
+                        <i class="fas fa-lightbulb"></i> Show Hint
+                    </button>
+                    <button id="next-button" class="btn primary hidden">
+                        Next Question <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="results-screen" class="screen">
+            <div class="card">
+                <h1>Quiz Results</h1>
+                
+                <div class="results-summary">
+                    <div class="score-display">
+                        <span id="score-value">7</span>/<span id="total-questions">10</span>
+                    </div>
+                    <div id="score-percentage">70%</div>
+                    <div id="score-feedback" class="score-feedback good">Good work! Keep studying to improve further.</div>
+                </div>
+                
+                <h2>Question Review</h2>
+                <div id="answers-review" class="answers-review">
+                    <!-- Answer review items will be added here by JavaScript -->
+                </div>
+                
+                <div class="button-group">
+                    <button id="new-quiz-button" class="btn primary">Take Another Quiz</button>
+                    <button id="main-menu-button" class="btn secondary">Return to Menu</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Progress Screen -->
+        <div id="progress-screen" class="screen">
+            <div class="card">
+                <h1>Your Progress</h1>
+                
+                <div id="progress-stats" class="progress-stats">
+                    <!-- Progress statistics will be added here by JavaScript -->
+                </div>
+                
+                <div class="button-group">
+                    <button id="back-to-menu-from-progress" class="btn secondary">Back to Menu</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Debug Console (Hidden by default) -->
+        <div id="debug-console" class="debug-console hidden">
+            <div class="debug-header">
+                <h3>Debug Console</h3>
+                <button id="close-debug" class="btn-small">Close</button>
+            </div>
+            <div id="debug-log" class="debug-log"></div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>Enhanced Latin Quiz | <a href="https://github.com" target="_blank">GitHub</a></p>
+        <button id="toggle-debug" class="btn-small">Debug</button>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="latin-questions.js"></script>
+    <script src="quiz.js"></script>
+</body>
+</html>
